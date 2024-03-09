@@ -1,10 +1,13 @@
 import express from 'express'
 import {
   getAllPosts, createPost, getPostById, deletePost, updatePost,
-} from './db'
+} from './db.js';
+import logRequest from './logs.js';
+
 
 const app = express()
 app.use(express.json())
+app.use(logRequest);
 const port = 3000
 
 // Obtener todos los posts
