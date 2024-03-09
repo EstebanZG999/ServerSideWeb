@@ -1,0 +1,16 @@
+CREATE USER IF NOT EXISTS 'estebanz'@'%' IDENTIFIED BY 'Luna3Sol#2024';
+GRANT ALL PRIVILEGES ON blog_db.* TO 'estebanz'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+CREATE DATABASE IF NOT EXISTS blog_db;
+
+CREATE TABLE IF NOT EXISTS blog_posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    competitor_name VARCHAR(255) NOT NULL,
+    top_squat VARCHAR(255) NOT NULL,
+    top_bench VARCHAR(255) NOT NULL,
+    top_deadlift VARCHAR(255) NOT NULL,
+    category VARCHAR(255) NOT NULL
+);
