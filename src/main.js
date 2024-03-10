@@ -1,22 +1,21 @@
-import express from 'express';
-import cors from 'cors';
-import swaggerUi from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerOptions from './swagger.js';
+import express from 'express'
+import cors from 'cors'
+import swaggerUi from 'swagger-ui-express'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerOptions from './swagger.js'
 import {
   getAllPosts, createPost, getPostById, deletePost, updatePost,
-} from './db.js';
-import logRequest from './logs.js';
+} from './db.js'
+import logRequest from './logs.js'
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(logRequest);
+const app = express()
+app.use(cors())
+app.use(express.json())
+app.use(logRequest)
 const port = 3000
 
-
-const swaggerSpec = swaggerJSDoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+const swaggerSpec = swaggerJSDoc(swaggerOptions)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 /**
  * @swagger
@@ -66,22 +65,30 @@ app.get('/posts', async (req, res) => {
 
 // Crear un nuevo post
 app.post('/posts', async (req, res) => {
-    const { title, content, competitorName, topSquat, topBench, topDeadlift, category } = req.body;
-    
+  const {
+    title, content, competitorName, topSquat, topBench, topDeadlift, category,
+  } = req.body
 
-    if (!title || !content) {
-      return res.status(400).send('Missing title or content in request body');
-    }
-  
-    try {
-      const result = await createPost(title, content, competitorName, topSquat, topBench, topDeadlift, category);
-      res.status(200).json({ message: 'Post created successfully', postId: result.insertId });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send(error.sqlMessage || 'An error occurred');
-    }
-  });
+  if (!title || !content) {
+    return res.status(400).send('Missing title or content in request body')
+  }
 
+  try {
+    const result = await createPost(
+      title,
+      content,
+      competitorName,
+      topSquat,
+      topBench,
+      topDeadlift,
+      category,
+    )
+    return res.status(200).json({ message: 'Post created successfully', postId: result.insertId })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send(error.sqlMessage || 'An error occurred')
+  }
+})
 
 /**
  * @swagger
@@ -131,7 +138,7 @@ app.get('/posts/:postId', async (req, res) => {
  * /posts/{postId}:
  *   put:
  *     summary: Actualiza un post existente por ID.
- *     description: Modifica los datos del post correspondiente al ID proporcionado con la nueva información suministrada.
+ *     description: Modifica los datos del post correspondiente al ID.
  *     parameters:
  *       - in: path
  *         name: postId
@@ -157,29 +164,43 @@ app.get('/posts/:postId', async (req, res) => {
  */
 
 app.put('/posts/:postId', async (req, res) => {
-    const { postId } = req.params;
-    const {
-      title, content, competitorName, topSquat, topBench, topDeadlift, category,
-    } = req.body;
-  
-    // Validación simple como ejemplo
-    if (!title || !content || !competitorName || !topSquat || !topBench || !topDeadlift || !category) {
-      return res.status(400).send('Missing required fields in request body');
+  const { postId } = req.params
+  const {
+    title, content, competitorName, topSquat, topBench, topDeadlift, category,
+  } = req.body
+
+  // Validación simple como ejemplo
+  if (
+    !title
+    || !content
+    || !competitorName
+    || !topSquat
+    || !topBench
+    || !topDeadlift
+    || !category) {
+    return res.status(400).send('Missing required fields in request body')
+  }
+
+  try {
+    const result = await updatePost(
+      postId,
+      title,
+      content,
+      competitorName,
+      topSquat,
+      topBench,
+      topDeadlift,
+      category,
+    )
+    if (result.affectedRows > 0) {
+      return res.status(200).json({ message: 'Post updated successfully' })
     }
-  
-    try {
-      const result = await updatePost(postId, title, content, competitorName, topSquat, topBench, topDeadlift, category);
-      if (result.affectedRows > 0) {
-        res.status(200).json({ message: 'Post updated successfully' });
-      } else {
-        res.status(404).send('Post not found');
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).send(error.sqlMessage || 'An error occurred');
-    }
-  });
-  
+    return res.status(404).send('Post not found')
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send(error.sqlMessage || 'An error occurred')
+  }
+})
 
 /**
  * @swagger
@@ -202,29 +223,27 @@ app.put('/posts/:postId', async (req, res) => {
  *       500:
  *         description: Error en el servidor al intentar eliminar el post.
  */
-//Borrar un post  
+// Borrar un post
 app.delete('/posts/:postId', async (req, res) => {
-  const { postId } = req.params;
-  
+  const { postId } = req.params
+
   try {
-    const result = await deletePost(postId);
+    const result = await deletePost(postId)
     if (result.affectedRows > 0) {
-      res.status(204).send();
+      res.status(204).send()
     } else {
-      res.status(404).send('Post not found');
+      res.status(404).send('Post not found')
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).send('An error occurred');
+    console.error(error)
+    res.status(500).send('An error occurred')
   }
-});
-
+})
 
 app.listen(port, () => {
   console.log(`Server listening at http://127.0.0.1:${port}`)
 })
 
-
-app.use((req, res, next) => {
-    res.status(404).send('Endpoint not found');
-  });
+app.use((req, res) => {
+  res.status(404).send('Endpoint not found')
+})

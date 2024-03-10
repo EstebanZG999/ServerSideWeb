@@ -7,7 +7,15 @@ export async function getAllPosts() {
 }
 
 // Crear un nuevo post
-export async function createPost(title, content, competitorName, topSquat, topBench, topDeadlift, category) {
+export async function createPost(
+  title,
+  content,
+  competitorName,
+  topSquat,
+  topBench,
+  topDeadlift,
+  category,
+) {
   const query = `
     INSERT INTO blog_posts (title, content, competitor_name, top_squat, top_bench, top_deadlift, category) 
     VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -19,13 +27,13 @@ export async function createPost(title, content, competitorName, topSquat, topBe
     return {
       success: true,
       message: 'Post created successfully',
-      postId: result.insertId
+      postId: result.insertId,
     }
   } catch (error) {
     console.error(error)
     return {
       success: false,
-      message: error.sqlMessage || 'An error occurred during the post creation'
+      message: error.sqlMessage || 'An error occurred during the post creation',
     }
   }
 }
@@ -46,10 +54,19 @@ export async function getPostById(id) {
 }
 
 // Actualizar post
-export async function updatePost(id, title, content, competitorName, topSquat, topBench, topDeadlift, category) {
+export async function updatePost(
+  id,
+  title,
+  content,
+  competitorName,
+  topSquat,
+  topBench,
+  topDeadlift,
+  category,
+) {
   const [result] = await conn.query(
     'UPDATE blog_posts SET title = ?, content = ?, competitor_name = ?, top_squat = ?, top_bench = ?, top_deadlift = ?, category = ? WHERE id = ?',
-    [title, content, competitorName, topSquat, topBench, topDeadlift, category, id]
+    [title, content, competitorName, topSquat, topBench, topDeadlift, category, id],
   )
   return result
 }

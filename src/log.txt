@@ -17,3 +17,5 @@
 2024-03-10T19:06:11.125Z, GET /api-docs/swagger-ui-standalone-preset.js, Payload: {}, Status: 304, Duration: 1ms
 2024-03-10T19:06:11.128Z, GET /api-docs/swagger-ui-init.js, Payload: {}, Status: 200, Duration: 1ms
 2024-03-10T19:06:11.130Z, GET /api-docs/swagger-ui-bundle.js, Payload: {}, Status: 304, Duration: 0ms
+2024-03-10T19:49:18.369Z, GET /posts/1, Payload: {"title":"Kou competencia 2","content":"Competencia Rogue","competitor_name":"Edwin Kou","top_squat":205,"top_bench":150,"top_deadlift":275,"category":"120 lbs"}, Status: 404, Duration: 198ms
+2024-03-10T19:49:41.497Z, GET /posts/, Payload: {"title":"Kou competencia 2","content":"Competencia Rogue","competitor_name":"Edwin Kou","top_squat":205,"top_bench":150,"top_deadlift":275,"category":"120 lbs"}, Status: 200, Duration: 6ms
