@@ -2,3 +2,18 @@
 2024-03-09T21:19:53.080Z, GET /posts/, Payload: {"title":"Kou competencia 2","content":"Competencia Rogue","competitor_name":"Edwin Kou","top_squat":205,"top_bench":150,"top_deadlift":275,"category":"120 lbs"}, Status: 200, Duration: 35ms
 2024-03-09T21:20:17.710Z, GET /posts/1, Payload: {"title":"Kou competencia 2","content":"Competencia Rogue","competitor_name":"Edwin Kou","top_squat":205,"top_bench":150,"top_deadlift":275,"category":"120 lbs"}, Status: 404, Duration: 6ms
 2024-03-09T21:22:04.410Z, GET /posts/2, Payload: {}, Status: 304, Duration: 3ms
+2024-03-10T18:54:11.190Z, GET /, Payload: {}, Status: 404, Duration: 3ms
+2024-03-10T18:54:11.243Z, GET /favicon.ico, Payload: {}, Status: 404, Duration: 1ms
+2024-03-10T18:54:15.144Z, GET /api-docs, Payload: {}, Status: 301, Duration: 1ms
+2024-03-10T18:54:15.148Z, GET /api-docs/, Payload: {}, Status: 200, Duration: 1ms
+2024-03-10T18:54:15.165Z, GET /api-docs/swagger-ui.css, Payload: {}, Status: 200, Duration: 6ms
+2024-03-10T18:54:15.172Z, GET /api-docs/swagger-ui-init.js, Payload: {}, Status: 200, Duration: 0ms
+2024-03-10T18:54:15.169Z, GET /api-docs/swagger-ui-standalone-preset.js, Payload: {}, Status: 200, Duration: 6ms
+2024-03-10T18:54:15.170Z, GET /api-docs/swagger-ui-bundle.js, Payload: {}, Status: 200, Duration: 12ms
+2024-03-10T18:54:15.381Z, GET /api-docs/favicon-32x32.png, Payload: {}, Status: 200, Duration: 1ms
+2024-03-10T19:06:06.392Z, GET /, Payload: {}, Status: 404, Duration: 3ms
+2024-03-10T19:06:11.105Z, GET /api-docs/, Payload: {}, Status: 304, Duration: 2ms
+2024-03-10T19:06:11.121Z, GET /api-docs/swagger-ui.css, Payload: {}, Status: 304, Duration: 1ms
+2024-03-10T19:06:11.125Z, GET /api-docs/swagger-ui-standalone-preset.js, Payload: {}, Status: 304, Duration: 1ms
+2024-03-10T19:06:11.128Z, GET /api-docs/swagger-ui-init.js, Payload: {}, Status: 200, Duration: 1ms
+2024-03-10T19:06:11.130Z, GET /api-docs/swagger-ui-bundle.js, Payload: {}, Status: 304, Duration: 0ms
