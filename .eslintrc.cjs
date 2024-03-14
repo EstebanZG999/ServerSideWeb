@@ -9,12 +9,18 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  rules: {
+  "rules": {
     "semi": ["error", "never"],
-    "import/extensions": ["error", "ignorePackages", {
-      js: "always",
-  }],
-},
+    "object-curly-newline": "off", 
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "ignorePackages" 
+      }
+    ],
+    "no-console": 0
+  },
   overrides: [
     {
       files: [
