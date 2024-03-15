@@ -12,7 +12,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(logRequest)
-const port = 3000
+const port = 22119
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
