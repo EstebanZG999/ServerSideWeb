@@ -19,6 +19,49 @@ const port = 22119
 const swaggerSpec = swaggerJSDoc(swaggerOptions)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
+
+//Autenticación de usuario
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const usuario = await verifyUser(username);
+
+  if (usuario.length > 0) {
+    if (comparar(password, usuario[0].contrasena)) {
+      res.status(200).json({ mensaje: 'Bienvenido' });
+    } else {
+      res.status(401).json({ mensaje: 'La contraseña es incorrecta' });
+    }
+  } else {
+    res.status(404).json({ mensaje: 'El usuario no existe' });
+  }
+});
+
+
+//Creacion de usuario
+app.post('/user', async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json('Se necesita tener los campos llenos');
+  }
+
+  const usuarioExistente = await verifyUser(username);
+
+  if (usuarioExistente.length > 0) {
+    return res.status(409).json({ mensaje: 'El usuario ya existe' });
+  }
+
+  const contraHasheada = hashear(password);
+
+  try {
+    await createUser(username, contraHasheada);
+    res.status(201).json({ mensaje: 'Usuario registrado correctamente' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ mensaje: 'Error al registrar al usuario' });
+  }
+});
+
 /**
  * @swagger
  * /posts:
@@ -242,48 +285,6 @@ app.delete('/posts/:postId', async (req, res) => {
   }
 })
 
-
-//Autenticación de usuario
-app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  const usuario = await verifyUser(username);
-
-  if (usuario.length > 0) {
-    if (comparar(password, usuario[0].contrasena)) {
-      res.status(200).json({ mensaje: 'Bienvenido' });
-    } else {
-      res.status(401).json({ mensaje: 'La contraseña es incorrecta' });
-    }
-  } else {
-    res.status(404).json({ mensaje: 'El usuario no existe' });
-  }
-});
-
-
-//Creacion de usuario
-app.post('/user', async (req, res) => {
-  const { username, password } = req.body;
-
-  if (!username || !password) {
-    return res.status(400).json('Se necesita tener los campos llenos');
-  }
-
-  const usuarioExistente = await verifyUser(username);
-
-  if (usuarioExistente.length > 0) {
-    return res.status(409).json({ mensaje: 'El usuario ya existe' });
-  }
-
-  const contraHasheada = hashear(password);
-
-  try {
-    await createUser(username, contraHasheada);
-    res.status(201).json({ mensaje: 'Usuario registrado correctamente' });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ mensaje: 'Error al registrar al usuario' });
-  }
-});
 
 app.listen(port, () => {
   console.log(`Server listening at http://127.0.0.1:${port}`)
