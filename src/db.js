@@ -70,3 +70,14 @@ export async function updatePost(
   )
   return result
 }
+
+
+export async function createUser(username, password) {
+  const [result] = await conn.query('INSERT INTO usuarios (usuario, contrasena) VALUES (?, ?)', [username, password]);
+  return result;
+}
+
+export async function verifyUser(username) {
+  const [rows] = await conn.query('SELECT * FROM usuarios WHERE usuario = ?', [username]);
+  return rows;
+}
