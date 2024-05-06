@@ -23,18 +23,26 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 //Autenticación de usuario
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
-  const usuario = await verifyUser(username);
-
-  if (usuario.length > 0) {
-    if (comparar(password, usuario[0].contrasena)) {
-      res.status(200).json({ mensaje: 'Bienvenido' });
+  
+  try {
+    const usuarios = await verifyUser(username);
+    if (usuarios.length > 0) {
+      const usuario = usuarios[0]; // Asumiendo que verifyUser devuelve una lista de usuarios
+      const contrasenaValida = await comparar(password, usuario.contrasena); // Asegúrate de que comparar sea asíncrono si usa bcrypt
+      if (contrasenaValida) {
+        res.status(200).json({ mensaje: 'Bienvenido' });
+      } else {
+        res.status(401).json({ mensaje: 'La contraseña es incorrecta' });
+      }
     } else {
-      res.status(401).json({ mensaje: 'La contraseña es incorrecta' });
+      res.status(404).json({ mensaje: 'El usuario no existe' });
     }
-  } else {
-    res.status(404).json({ mensaje: 'El usuario no existe' });
+  } catch (error) {
+    console.error('Error al autenticar el usuario:', error);
+    res.status(500).send('Error interno del servidor');
   }
 });
+
 
 
 //Creacion de usuario
