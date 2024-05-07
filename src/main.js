@@ -20,33 +20,26 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 
-//Autenticación de usuario
+// Autenticación de usuario
 app.post('/login', async (req, res) => {
+  console.log("Intentando autenticar:", req.body);
   const { username, password } = req.body;
-  
-  try {
-    const usuarios = await verifyUser(username);
-    if (usuarios.length > 0) {
-      const usuario = usuarios[0]; // Asumiendo que verifyUser devuelve una lista de usuarios
-      const contrasenaValida = await comparar(password, usuario.contrasena); // Asegúrate de que comparar sea asíncrono si usa bcrypt
-      if (contrasenaValida) {
-        res.status(200).json({ mensaje: 'Bienvenido' });
-      } else {
-        res.status(401).json({ mensaje: 'La contraseña es incorrecta' });
-      }
+  const usuario = await verifyUser(username);
+
+  if (usuario.length > 0) {
+    if (comparar(password, usuario[0].contrasena)) {
+      res.status(200).json({ mensaje: 'Bienvenido' });
     } else {
-      res.status(404).json({ mensaje: 'El usuario no existe' });
+      res.status(401).json({ mensaje: 'La contraseña es incorrecta' });
     }
-  } catch (error) {
-    console.error('Error al autenticar el usuario:', error);
-    res.status(500).send('Error interno del servidor');
+  } else {
+    res.status(404).json({ mensaje: 'El usuario no existe' });
   }
 });
 
-
-
-//Creacion de usuario
+// Creación de usuario
 app.post('/user', async (req, res) => {
+  console.log("Intentando crear usuario:", req.body);
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -69,6 +62,7 @@ app.post('/user', async (req, res) => {
     res.status(500).json({ mensaje: 'Error al registrar al usuario' });
   }
 });
+
 
 /**
  * @swagger
