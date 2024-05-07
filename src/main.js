@@ -64,6 +64,11 @@ app.post('/user', async (req, res) => {
 });
 
 
+app.get('/user', (req, res) => {
+  res.status(200).json({ mensaje: "Endpoint de usuario alcanzado correctamente" });
+});
+
+
 
 
 /**
