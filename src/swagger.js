@@ -7,8 +7,8 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: 'http://localhost:3000',
-      description: 'Servidor de Desarrollo',
+      url: 'https://api.tiburoncin.lat/22119',
+      description: 'Servidor de Producción',
     },
   ],
   components: {

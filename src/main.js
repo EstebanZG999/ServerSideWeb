@@ -39,29 +39,33 @@ app.post('/login', async (req, res) => {
 
 // Creación de usuario
 app.post('/user', async (req, res) => {
-  console.log("Intentando crear usuario:", req.body);
+  console.log("Accediendo a /user con datos:", req.body);  // Este log mostrará los datos recibidos en la consola
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.status(400).json('Se necesita tener los campos llenos');
+    console.log("Error: Campos vacíos");
+    return res.status(400).json({ mensaje: 'Se necesita tener los campos llenos' });
   }
 
   const usuarioExistente = await verifyUser(username);
 
   if (usuarioExistente.length > 0) {
+    console.log("Error: El usuario ya existe");
     return res.status(409).json({ mensaje: 'El usuario ya existe' });
   }
 
   const contraHasheada = hashear(password);
 
   try {
-    await createUser(username, contraHasheada);
+    const result = await createUser(username, contraHasheada);
+    console.log("Usuario creado con éxito", result);
     res.status(201).json({ mensaje: 'Usuario registrado correctamente' });
   } catch (error) {
-    console.log(error);
+    console.error("Error al registrar al usuario:", error);
     res.status(500).json({ mensaje: 'Error al registrar al usuario' });
   }
 });
+
 
 
 /**
