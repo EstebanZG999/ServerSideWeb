@@ -73,11 +73,11 @@ export async function updatePost(
 
 
 export async function createUser(username, password) {
-  const [result] = await conn.query('INSERT INTO usuarios (usuario, contrasena) VALUES (?, ?)', [username, password]);
+  const [result] = await conn.query('INSERT INTO users (username , password) VALUES (?, ?)', [username, password]);
   return result;
 }
 
 export async function verifyUser(username) {
-  const [rows] = await conn.query('SELECT * FROM usuarios WHERE usuario = ?', [username]);
+  const [rows] = await conn.query('SELECT * FROM users WHERE userNAME = ?', [username]);
   return rows;
 }
