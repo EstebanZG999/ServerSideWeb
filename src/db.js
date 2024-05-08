@@ -78,6 +78,11 @@ export async function createUser(username, password) {
 }
 
 export async function verifyUser(username) {
-  const [rows] = await conn.query('SELECT * FROM users WHERE userNAME = ?', [username]);
-  return rows;
+  try {
+    const [rows] = await conn.query('SELECT * FROM users WHERE username = ?', [username]);
+    return rows[0]; 
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null; 
+  }
 }

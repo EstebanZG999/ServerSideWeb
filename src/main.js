@@ -8,6 +8,8 @@ import {
 } from './db.js'
 import logRequest from './logs.js'
 import { hashear, comparar } from './hash.js';
+import jwt from 'jsonwebtoken';
+  
 
 
 const app = express()
@@ -26,9 +28,12 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const usuario = await verifyUser(username);
 
-  if (usuario.length > 0) {
-    if (comparar(password, usuario[0].contrasena)) {
-      res.status(200).json({ mensaje: 'Bienvenido' });
+  if (usuario) {
+    if (comparar(password, usuario.password)) { 
+      // Genera el token que expira en X cantidad de tiempo
+      const token = jwt.sign({ username: usuario.username }, 'tu_clave_secreta', { expiresIn: '1h' });
+
+      res.status(200).json({ mensaje: 'Bienvenido', token });
     } else {
       res.status(401).json({ mensaje: 'La contraseña es incorrecta' });
     }
@@ -37,9 +42,12 @@ app.post('/login', async (req, res) => {
   }
 });
 
+
+
+
 // Creación de usuario
 app.post('/user', async (req, res) => {
-  console.log("Endpoint /user reached"); // Esto debería aparecer en tus logs cuando haces una petición a /user
+  console.log("Endpoint /user reached"); 
   const { username, password } = req.body;
   
   if (!username || !password) {
